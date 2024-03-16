@@ -1,162 +1,146 @@
-// Inputs 
+// Input elements
 const days = document.getElementById("day");
 const month = document.getElementById("month");
 const year = document.getElementById("year");
+const myBtn = document.getElementById("btn");
 
-const Mybtn = document.getElementById("btn");
+// Output elements
+const showYear = document.getElementById("years");
+const showMonth = document.getElementById("months");
+const showDay = document.getElementById("days");
 
-// Display calculation
-const ShowYear = document.getElementById("showAno")
-const ShowMonth = document.getElementById("showMes")
-const ShowDay = document.getElementById("showDias")
+// Event listener
+myBtn.addEventListener("click", basicValidation);
 
-Mybtn.addEventListener("click", basicValidation);
-const label = document.getElementsByTagName("label");
-const inputs = document.getElementsByTagName("input");
-const warning = document.getElementsByClassName("warning");
-
-function basicValidation(){
-  
-  // Check if fields are empty!
-  if(days.value == "" && month.value == "" && year.value == "")
-  {
-    // For loop to iterate through all warning classes, all elements with the label tag, and input and thus display the warning and change the necessary colors
-    for(let i = 0; i <3; i++){
-      warning[i].innerHTML= "This field is required";
-      label[i].style.color = "#FF5757";
-      inputs[i].style.border = "2px solid #FF5757";
-      inputs[i].style.backgroundColor = "#F0F0F0";
-
-    }
+// Validation Functions
+function basicValidation() {
+  // Call validateInput() to perform basic validation
+  if (!validateInput()) {
+    return;
   }
-    else{
-      for(let i = 0; i <3; i++){
-        warning[i].innerHTML= "";
-        inputs[i].style.border = "2px solid #DBDBDB";
-        label[i].style.color = "#716F6F";
-        inputs[i].style.backgroundColor = "#FFF";
-      }
 
-      validateInput();
-    }
+  // Additional validation or operations can be performed here
+  if (!checkLeapYear()) {
+    alert("Invalid date input"); // Display an error message for invalid date input
+    return;
+  }
 
+  // Calculate the date
+  calculateDate();
 }
 
-function validateInput(){
-    // Validate input fields
-    const currentDate = new Date();
+function validateInput() {
+  // Validate input fields
+  // Display error messages if input values are invalid
+  // Otherwise, clear any existing messages and proceed to further validation
+  const errorMsgDay = document.getElementById("error-day");
+  const errorMsgMonth = document.getElementById("error-month");
+  const errorMsgYear = document.getElementById("error-year");
+  const labels = document.getElementsByTagName("label");
+  const inputs = document.getElementsByTagName("input");
 
-    if(days.value > 31 || days.value <= 0){
-      errorData();
+  // Clear previous error messages
+  errorMsgDay.innerHTML = "";
+  errorMsgMonth.innerHTML = "";
+  errorMsgYear.innerHTML = "";
+
+  // Display warning messages if fields are empty
+  if (days.value === "" || month.value === "" || year.value === "") {
+    errorMsgDay.innerHTML = "This field is required";
+    errorMsgMonth.innerHTML = "This field is required";
+    errorMsgYear.innerHTML = "This field is required";
+    for (let i = 0; i < 3; i++) {
+      labels[i].style.color = "brown";
+      inputs[i].style.border = "1px solid brown";
     }
-    else if(month.value > 12 || month.value <= 0)
-    {
-      warning[1].innerHTML = "Must be a valid month";
-
-      for (let i = 0; i < 3; i++) {
-      label[i].style.color = "#FF5757";
-      inputs[i].style.border = "2px solid #FF5757";
-      }
-    }
-
-    else if(year.value > currentDate.getFullYear() || year.value <= 0)
-    {
-      warning[2].innerHTML = "Must be in the past";
-
-      for (let i = 0; i < 3; i++) {
-      label[i].style.color = "#FF5757";
-      inputs[i].style.border = "2px solid #FF5757";
-      }
-    }
-
-    else {
-      clearMessages();
-      checkLeapYear();
+    return false;
   }
- 
+
+  // Validate input values
+  const parsedDay = parseInt(days.value);
+  const parsedMonth = parseInt(month.value);
+  const parsedYear = parseInt(year.value);
+  let isValid = true;
+
+  if (parsedDay < 1 || parsedDay > 31) {
+    errorMsgDay.innerHTML = "Must be a valid day";
+    labels[0].style.color = "brown";
+    inputs[0].style.border = "1px solid brown";
+    isValid = false;
+  }
+
+  if (parsedMonth < 1 || parsedMonth > 12) {
+    errorMsgMonth.innerHTML = "Must be a valid month";
+    labels[1].style.color = "brown";
+    inputs[1].style.border = "1px solid brown";
+    isValid = false;
+  }
+
+  if (parsedYear < 1 || parsedYear > new Date().getFullYear()) {
+    errorMsgYear.innerHTML = "Must be in the past";
+    labels[2].style.color = "brown";
+    inputs[2].style.border = "1px solid brown";
+    isValid = false;
+  }
+
+  return isValid;
 }
 
 function checkLeapYear() {
+  // Check if the given year is a leap year
+  const parsedYear = parseInt(year.value);
+  const parsedMonth = parseInt(month.value);
+  const parsedDay = parseInt(days.value);
 
-  if (isLeapYear(year.value)) 
-  {
-    if (month.value == 2 && days.value > 29) 
-    {
-        errorData();
-    } 
-      else 
-      {
-        calculateDate();
-      }  
-  } 
-    else 
-  {
-    if (month.value == 2 && days.value > 28) 
-    {
-      errorData();
-    } 
-    else 
-    {
-      const monthsWith30Days = [4, 6, 9, 11];
-      const monthsWith31Days = [1, 3, 5, 7, 8, 10, 12]; 
-
-      const numericMonth = parseInt(month.value, 10);
-      if(monthsWith31Days.includes(numericMonth) && days.value <= 31){
-        calculateDate();
-      }
-      else if(monthsWith30Days.includes(numericMonth) && days.value <=30)
-      {
-        calculateDate();
-      }
-      else{
-        errorData();
-      }
+  if (parsedMonth === 2) {
+    // February is the second month (index 1)
+    if (
+      (parsedYear % 4 === 0 && parsedYear % 100 !== 0) ||
+      parsedYear % 400 === 0
+    ) {
+      // It's a leap year
+      return parsedDay >= 1 && parsedDay <= 29; // Return true if the day is valid for a leap year
+    } else {
+      // It's not a leap year
+      return parsedDay >= 1 && parsedDay <= 28; // Return true if the day is valid for a non-leap year
     }
   }
+  return true; // Return true for other months
 }
 
 function calculateDate() {
-  let userDate = new Date(year.value, month.value, days.value);
+  // Get the current date
+  const currentDate = new Date();
 
-  let currentDate = new Date();
+  // Get the user's input date
+  const userDate = new Date(
+    parseInt(year.value),
+    parseInt(month.value) - 1,
+    parseInt(days.value)
+  );
 
-  let difference = currentDate.getTime() - userDate.getTime();
-  let years = Math.floor(difference / (1000 * 60 * 60 * 24 * 365.25));
-  
-  let totalDays = Math.floor(difference / (1000 * 60 * 60 * 24));
-
-  const months = Math.floor((totalDays % 365) / 30);
-  const remainingDays = Math.floor((totalDays % 365) / 12);
-
-  console.log(years, months, remainingDays)
-
-  ShowYear.innerHTML = years;
-  ShowMonth.innerHTML = months;
-  ShowDay.innerHTML = remainingDays;
-
-}
-
-function errorData() {
-  warning[0].innerHTML = "Must be a valid day";
-
-  for (let i = 0; i < 3; i++) {
-    label[i].style.color = "#FF5757";
-    inputs[i].style.border = "2px solid #FF5757";
+  // Check if the user's input date is valid
+  if (isNaN(userDate.getTime())) {
+    // Handle invalid date input
+    // For example, display an error message or return early
+    alert("Invalid date input");
+    return;
   }
-}
 
-function clearMessages() {
-  warning[0].innerHTML = "";
-  for (let i = 0; i <= 2; i++) {
-    label[i].style.color = "#716F6F";
-    inputs[i].style.border = "2px solid #DBDBDB";
-  }
-}
+  // Calculate the difference between the current date and the user's input date
+  const calcDate = currentDate - userDate;
 
-function isLeapYear(year) {
-  if ((year % 400 === 0) || (year % 4 === 0 && year % 100 !== 0)) {
-    return true;
-  } else {
-    return false;
-  }
+  // Calculate the age in years, months, and remaining days
+  const calcYear = Math.floor(calcDate / (1000 * 60 * 60 * 24 * 365));
+  const calcMonth = Math.floor(
+    (calcDate % (1000 * 60 * 60 * 24 * 365)) / (1000 * 60 * 60 * 24 * 30.44)
+  );
+  const calcDay = Math.floor(
+    (calcDate % (1000 * 60 * 60 * 24 * 30.44)) / (1000 * 60 * 60 * 24)
+  );
+
+  // Display the calculated age in the corresponding elements
+  showYear.innerHTML = calcYear;
+  showMonth.innerHTML = calcMonth;
+  showDay.innerHTML = calcDay;
 }

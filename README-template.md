@@ -1,119 +1,79 @@
-# Frontend Mentor - Age calculator app solution
+This is very interseting for my journey with web development.
 
-This is a solution to the [Age calculator app challenge on Frontend Mentor](https://www.frontendmentor.io/challenges/age-calculator-app-dF9DFFpj-Q). Frontend Mentor challenges help you improve your coding skills by building realistic projects. 
+# How i build this app
 
-## Table of contents
+## 1. HTML and CSS
 
-- [Overview](#overview)
-  - [The challenge](#the-challenge)
-  - [Screenshot](#screenshot)
-  - [Links](#links)
-- [My process](#my-process)
-  - [Built with](#built-with)
-  - [What I learned](#what-i-learned)
-  - [Continued development](#continued-development)
-  - [Useful resources](#useful-resources)
-- [Author](#author)
-- [Acknowledgments](#acknowledgments)
+i'm very confident with HTML and CSS
 
-**Note: Delete this note and update the table of contents based on what sections you keep.**
+## 2. JavaScript
 
-## Overview
+i have say the truth that im so confuse with the step to make application like this.
 
-### The challenge
+and to make my step clearly i just want to make like this.
 
-Users should be able to:
+// input
+const days = document.getElementById("day");
+const month = document.getElementById("month");
+const year = document.getElementById("year");
+const myBtn = document.getElementById("btn");
 
-- View an age in years, months, and days after submitting a valid date through the form
-- Receive validation errors if:
-  - Any field is empty when the form is submitted
-  - The day number is not between 1-31
-  - The month number is not between 1-12
-  - The year is in the future
-  - The date is invalid e.g. 31/04/1991 (there are 30 days in April)
-- View the optimal layout for the interface depending on their device's screen size
-- See hover and focus states for all interactive elements on the page
-- **Bonus**: See the age numbers animate to their final number when the form is submitted
+// output display
+const showYear = document.getElementById("years");
+const showMonth = document.getElementById("months");
+const showDay = document.getElementById("days");
 
-### Screenshot
+//event listener
+myBtn.addEventListener("click", basicValidation);
 
-![](./screenshot.jpg)
-
-Add a screenshot of your solution. The easiest way to do this is to use Firefox to view your project, right-click the page and select "Take a Screenshot". You can choose either a full-height screenshot or a cropped one based on how long the page is. If it's very long, it might be best to crop it.
-
-Alternatively, you can use a tool like [FireShot](https://getfireshot.com/) to take the screenshot. FireShot has a free option, so you don't need to purchase it. 
-
-Then crop/optimize/edit your image however you like, add it to your project, and update the file path in the image above.
-
-**Note: Delete this note and the paragraphs above when you add your screenshot. If you prefer not to add a screenshot, feel free to remove this entire section.**
-
-### Links
-
-- Solution URL: [Add solution URL here](https://your-solution-url.com)
-- Live Site URL: [Add live site URL here](https://your-live-site-url.com)
-
-## My process
-
-### Built with
-
-- Semantic HTML5 markup
-- CSS custom properties
-- Flexbox
-- CSS Grid
-- Mobile-first workflow
-- [React](https://reactjs.org/) - JS library
-- [Next.js](https://nextjs.org/) - React framework
-- [Styled Components](https://styled-components.com/) - For styles
-
-**Note: These are just examples. Delete this note and replace the list above with your own choices**
-
-### What I learned
-
-Use this section to recap over some of your major learnings while working through this project. Writing these out and providing code samples of areas you want to highlight is a great way to reinforce your own knowledge.
-
-To see how you can add code snippets, see below:
-
-```html
-<h1>Some HTML code I'm proud of</h1>
-```
-```css
-.proud-of-this-css {
-  color: papayawhip;
+//Validation Functions:
+function basicValidation() {
+// Check if fields are empty
+// Display warning messages if fields are empty
+// Validate input values
+// Display error messages if input values are invalid
+// Otherwise, clear any existing messages and proceed to further validation
+// Finally, call the function to check leap year
 }
-```
-```js
-const proudOfThisFunc = () => {
-  console.log('🎉')
+
+function validateInput() {
+// Validate input fields
+// Display error messages if input values are invalid
+// Otherwise, clear any existing messages and proceed to further validation
+// Finally, call the function to check leap year
 }
-```
 
-If you want more help with writing markdown, we'd recommend checking out [The Markdown Guide](https://www.markdownguide.org/) to learn more.
+function checkLeapYear() {
+// Check if the given year is a leap year
+// Depending on whether it's a leap year or not, proceed to calculate the age
+// If it's a leap year, validate the number of days in February
+// Calculate the age based on the input values
+}
 
-**Note: Delete this note and the content within this section and replace with your own learnings.**
+//Calculation Function:
+function calculateDate() {
+// Get the current date
+// Calculate the difference between the current date and the user's input date
+// Calculate the age in years, months, and remaining days
+// Display the calculated age in the corresponding elements
+}
 
-### Continued development
+in the course of writing code, I finally made efficiency between basicValidation() and validationInput(). and finally fix little bugs in // Validate input values because when we try to make wrong inputs in days and months, it will just showup the message error in a days but not in the works so wwe just add some variable to make it works.
+let isValid = true;
 
-Use this section to outline areas that you want to continue focusing on in future projects. These could be concepts you're still not completely comfortable with or techniques you found useful that you want to refine and perfect.
+if (parsedDay < 1 || parsedDay > 31) {
+errorMsgDay.innerHTML = "Must be a valid day";
+isValid = false;
+}
 
-**Note: Delete this note and the content within this section and replace with your own plans for continued development.**
+if (parsedMonth < 1 || parsedMonth > 12) {
+errorMsgMonth.innerHTML = "Must be a valid month";
+isValid = false;
+}
 
-### Useful resources
+if (parsedYear < 1 || parsedYear > new Date().getFullYear()) {
+errorMsgYear.innerHTML = "Must be in the past";
+isValid = false;
+}
 
-- [Example resource 1](https://www.example.com) - This helped me for XYZ reason. I really liked this pattern and will use it going forward.
-- [Example resource 2](https://www.example.com) - This is an amazing article which helped me finally understand XYZ. I'd recommend it to anyone still learning this concept.
-
-**Note: Delete this note and replace the list above with resources that helped you during the challenge. These could come in handy for anyone viewing your solution or for yourself when you look back on this project in the future.**
-
-## Author
-
-- Website - [Add your name here](https://www.your-site.com)
-- Frontend Mentor - [@yourusername](https://www.frontendmentor.io/profile/yourusername)
-- Twitter - [@yourusername](https://www.twitter.com/yourusername)
-
-**Note: Delete this note and add/remove/edit lines above based on what links you'd like to share.**
-
-## Acknowledgments
-
-This is where you can give a hat tip to anyone who helped you out on this project. Perhaps you worked in a team or got some inspiration from someone else's solution. This is the perfect place to give them some credit.
-
-**Note: Delete this note and edit this section's content as necessary. If you completed this challenge by yourself, feel free to delete this section entirely.**
+return isValid;
